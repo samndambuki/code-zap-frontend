@@ -23,4 +23,5 @@ export class Login implements OnInit {
   password:['',[Validators.required,Validators.minLength(6)]],
     });
   }
+
 }
