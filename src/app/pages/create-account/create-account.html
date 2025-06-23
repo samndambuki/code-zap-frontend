@@ -1,1 +1,22 @@
-<p>create-account works!</p>
+<div class="container">
+    <div class="form-container">
+      <div class="title">Create Account</div>
+      <form [formGroup]="createAccountForm">
+      <mat-form-field appearance="outline">
+          <mat-label>Enter your email</mat-label>
+          <input  matInput formControlName="email">
+        </mat-form-field>
+   
+        <mat-form-field appearance="outline">
+          <mat-label>Enter your password</mat-label>
+          <input matInput type="password" formControlName="password" >
+        </mat-form-field>
+      </form>
+      {{createAccountForm.value |json}}
+      <div class="buttons-container">
+          <button  matButton="elevated" class="login-button"> Create Account </button>
+          <p>OR</p>
+          <button routerLink="/login" matButton>Login</button>
+      </div>
+    </div>
+  </div>
