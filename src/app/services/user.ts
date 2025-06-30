@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class User {
   private baseUrl = 'http://localhost:3000';
+  public user:any;
   constructor(private http:HttpClient) { }
   public createAccount(userObj:any):Observable<any>{
     return this.http.post(`${this.baseUrl}/users`,userObj)

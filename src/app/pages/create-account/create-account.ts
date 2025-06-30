@@ -4,7 +4,7 @@ import { FormBuilder,FormsModule,ReactiveFormsModule,Validators } from '@angular
 import { MatButtonModule } from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { User } from '../../services/user';
 
 @Component({
@@ -15,7 +15,7 @@ import { User } from '../../services/user';
 })
 export class CreateAccount implements OnInit {
 createAccountForm:any;
-constructor(private fb:FormBuilder,public userService:User){}
+constructor(private fb:FormBuilder,public userService:User,private router:Router){}
 ngOnInit(): void {
   this.createAccountForm = this.fb.group({
     email:['',[Validators.required,Validators.email]],
@@ -25,8 +25,13 @@ ngOnInit(): void {
 
 create(){
   return this.userService.createAccount(this.createAccountForm.value).subscribe({
-    next:(res)=>{
+    next:(res:any)=>{
       console.log('account created successfully',res)
+          if(!res.error){
+          this.userService.user = res.response;
+          localStorage.setItem('user',JSON.stringify(res.response));
+          this.router.navigate(['/home']);
+        }
     },
     error:(err)=>{
       console.log('error creating account',err)
