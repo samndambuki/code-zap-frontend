@@ -20,7 +20,7 @@
         
       </form>
       <div class="buttons-container">
-          <button [disabled]="createAccountForm.invalid" matButton="elevated" class="login-button"> Create Account </button>
+          <button (click)="create()" [disabled]="createAccountForm.invalid" matButton="elevated" class="login-button"> Create Account </button>
           <p>OR</p>
           <button routerLink="/login" matButton>Login</button>
       </div>

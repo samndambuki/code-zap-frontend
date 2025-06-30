@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import { RouterModule } from '@angular/router';
+import { User } from '../../services/user';
 
 @Component({
   selector: 'app-create-account',
@@ -14,11 +15,23 @@ import { RouterModule } from '@angular/router';
 })
 export class CreateAccount implements OnInit {
 createAccountForm:any;
-constructor(private fb:FormBuilder){}
+constructor(private fb:FormBuilder,public userService:User){}
 ngOnInit(): void {
   this.createAccountForm = this.fb.group({
     email:['',[Validators.required,Validators.email]],
     password:['',[Validators.required,Validators.minLength(6)]]
   })
 }
+
+create(){
+  return this.userService.createAccount(this.createAccountForm.value).subscribe({
+    next:(res)=>{
+      console.log('account created successfully',res)
+    },
+    error:(err)=>{
+      console.log('error creating account',err)
+    }
+  })
+}
+
 }
