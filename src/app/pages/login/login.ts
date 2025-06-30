@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import { RouterModule } from '@angular/router';
+import { User } from '../../services/user';
 
 @Component({
   selector: 'app-login',
@@ -15,13 +16,24 @@ import { RouterModule } from '@angular/router';
 export class Login implements OnInit {
   loginForm: any;
 
-  constructor(private fb:FormBuilder){}
+  constructor(private fb:FormBuilder,private userService:User){}
   
   ngOnInit(): void {
   this.loginForm = this.fb.group({
   email:['',[Validators.required,Validators.email]],
   password:['',[Validators.required,Validators.minLength(6)]],
     });
+  }
+
+  login(){
+    this.userService.login(this.loginForm.value).subscribe({
+      next:(res)=>{
+        console.log(res)
+      },
+      error:(err)=>{
+        console.log(err);
+      }
+    })
   }
 
 }

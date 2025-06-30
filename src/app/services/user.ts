@@ -11,4 +11,7 @@ export class User {
   public createAccount(userObj:any):Observable<any>{
     return this.http.post(`${this.baseUrl}/users`,userObj)
   }
+  public login(userObj:any):Observable<any>{
+    return this.http.post(`${this.baseUrl}/users/login`,userObj);
+  }
 }
