@@ -23,6 +23,5 @@ export class Coding implements OnInit {
     minimap: { enabled: false },
     scrollBeyondLastLine: false
   };
-  
   code: string = 'function hello() {\n\tconsole.log("Hello world!");\n}';
 }
