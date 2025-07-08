@@ -1,14 +1,24 @@
 <div class="container">
     <div class="content-wrapper">
-      <button mat-raised-button class="new-button">New playground</button>
+      <button (click)="createNewFiddle()" mat-raised-button class="new-button">New playground</button>
+      <!-- track fiddle.fiddleid - unique identifier for performance. helps angular track changes -->
+      @for(fiddle of fiddles;track fiddle.fiddleid){
       <div class="fiddle-card" >
           <div class="title">
-             Playground Name
+             <!-- Playground Name -->
+              {{fiddle.name || 'untitled playground'}}
           </div>
           <div class="actions">
-              <button mat-icon-button> <mat-icon>edit</mat-icon> </button>
-              <button mat-icon-button> <mat-icon>delete</mat-icon> </button>
+              <button [routerLink]="['/coding',fiddle.fiddleid]" mat-icon-button> <mat-icon style="transform: scale(0.7);color:blue">edit</mat-icon> </button>
+              <button mat-icon-button> <mat-icon style="transform: scale(0.7);color:red">delete</mat-icon> </button>
           </div>
       </div>
+      }
+      <!-- shows content when array is empty  -->
+      @empty {
+       <div class="no-fiddles">
+        <p>No playgorunds found. Create your first one</p>
+       </div> 
+      }
     </div>
 </div>

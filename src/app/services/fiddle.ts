@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { User } from './user';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { FiddleResponse } from '../models/fiddle';
 
 @Injectable({
@@ -12,15 +12,15 @@ export class Fiddle {
   private userService = inject(User);
   private baseUrl = 'http://localhost:3000'
   newFiddle():Observable<FiddleResponse>{
-    return this.http.post<FiddleResponse>(`${this.baseUrl}/fiddles`,`${this.userService.user.userid}`) 
+    return this.http.post<FiddleResponse>(`${this.baseUrl}/fiddles`,{userid:this.userService.user.userid}) 
   }
   //get all fiddles for current user
-  getFiddles():Observable<FiddleResponse>{
-    return this.http.get<FiddleResponse>(`${this.baseUrl}/fiddles/user/${this.userService.user.userid}`)
+  getFiddles():Observable<FiddleResponse[]>{
+    return this.http.get<{error:boolean,response:FiddleResponse[]}>(`${this.baseUrl}/fiddles/user/${this.userService.user.userid}`).pipe(map((res)=>res.response))
   }
   //get data for a specific fiddle
   getFiddleData(fiddleid:string):Observable<FiddleResponse>{
-    return this.http.get<FiddleResponse>(`${this.baseUrl}/fiddles/${fiddleid}`)
+    return this.http.get<{error:boolean,response:FiddleResponse}>(`${this.baseUrl}/fiddles/${fiddleid}`).pipe((map((res)=>res.response)))
   }
   //saves a fiddle
   //Partial<T> is a utility type that makes all properties of tpye T optional

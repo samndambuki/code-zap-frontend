@@ -6,6 +6,10 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Fiddle } from '../../services/fiddle';
+import { User } from '../../services/user';
+import { FiddleResponse } from '../../models/fiddle';
 
 @Component({
   selector: 'app-coding',
@@ -14,8 +18,21 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './coding.scss'
 })
 export class Coding implements OnInit {
-  constructor(){}
-  ngOnInit(){}
+  fiddleid:string|undefined = '';
+  fiddle:FiddleResponse|undefined;
+  constructor(private route:ActivatedRoute,private router:Router,public fiddleService:Fiddle,public userService:User){}
+  ngOnInit(){
+    this.fiddleid = this.route.snapshot.paramMap.get('fiddleid') || ''
+    this.fiddleService.getFiddleData(this.fiddleid).subscribe({
+      next:(fiddle)=>{
+        this.fiddle = fiddle;
+         console.log(this.fiddle);
+      },
+      error:(error)=>{
+        console.log(error)
+      }
+    })
+  }
     editorOptions: any = {
     theme: 'vs-dark',
     language: 'javascript',
