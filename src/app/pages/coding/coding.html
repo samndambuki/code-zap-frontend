@@ -1,34 +1,32 @@
 <div class="container">
-    <div class="content-wrapper" >
+    <div class="content-wrapper">
       <div class="title-bar">
-        <mat-form-field class="title-input" >
+        <mat-form-field class="title-input">
           <mat-label>Title</mat-label>
-          <input matInput/>
+          <input matInput [(ngModel)]="fiddleName" [disabled]="!fiddle"/>
         </mat-form-field>
         <mat-form-field>
           <mat-label>Language</mat-label>
-          <mat-select>
+          <mat-select [(ngModel)]="fiddleLanguage"> 
+            <!-- <mat-option [value]="fiddle?.fiddleid">{{fiddle?.language}}</mat-option> -->
             <mat-option value="c">C</mat-option>
             <mat-option value="cpp">C++</mat-option>
             <mat-option value="python3">Python</mat-option>
           </mat-select>
         </mat-form-field>
-        <button mat-button>Save</button>
-        <button mat-button>Clear</button>
+        <button mat-button (click)="save()">Save</button>
+        <button mat-button (click)="clear()">Clear</button>
         <button mat-button>Delete</button>
       </div>
-  
-       <ngx-monaco-editor 
+    <ngx-monaco-editor
       [options]="editorOptions" 
       [(ngModel)]="code"
       style="height: 500px;">
     </ngx-monaco-editor>
-  
       <mat-form-field>
         <mat-label>StdIn</mat-label>
         <textarea  matInput  rows="6"></textarea>
       </mat-form-field>
-  
       <button class="run-button" mat-raised-button>Run</button>
       <pre class="output">Run the code to get the output</pre>
     </div>

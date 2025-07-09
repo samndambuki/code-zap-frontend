@@ -26,7 +26,7 @@ export class Fiddle {
   //Partial<T> is a utility type that makes all properties of tpye T optional
   //allows you to pass an object with any subset of {title:"my code"},{title:"my code",code:"console.log('hello"}
   save(fiddleObj:Partial<FiddleResponse>):Observable<FiddleResponse>{
-    return this.http.put<FiddleResponse>(`${this.baseUrl}/fiddles`,fiddleObj)
+    return this.http.put<{error:boolean,response:FiddleResponse}>(`${this.baseUrl}/fiddles`,fiddleObj).pipe(map((res)=>res.response))
   }
   //delete a fiddle
   delete(fiddleid:string):Observable<void>{
