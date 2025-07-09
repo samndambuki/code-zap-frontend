@@ -10,13 +10,17 @@ import { FiddleResponse } from '../models/fiddle';
 export class Fiddle {
   private http = inject(HttpClient);
   private userService = inject(User);
-  private baseUrl = 'http://localhost:3000'
+  private baseUrl = 'http://localhost:3000';
   newFiddle():Observable<FiddleResponse>{
-    return this.http.post<FiddleResponse>(`${this.baseUrl}/fiddles`,{userid:this.userService.user.userid}) 
+    return this.http.post<{error:boolean,response:FiddleResponse}>(`${this.baseUrl}/fiddles`,{userid:this.userService.user.userid}).pipe(map((res)=>res.response)) 
   }
   //get all fiddles for current user
   getFiddles():Observable<FiddleResponse[]>{
-    return this.http.get<{error:boolean,response:FiddleResponse[]}>(`${this.baseUrl}/fiddles/user/${this.userService.user.userid}`).pipe(map((res)=>res.response))
+    return this.http.get<{error:boolean,response:FiddleResponse[]}>(`${this.baseUrl}/fiddles/user/${this.userService.user.userid}`)
+    //pipe - allows you to chain multiple operators together to transform data
+    //transforms omitted value from the observable
+    //map - function that receives the current value and returns a new value
+    .pipe(map((res)=>res.response))
   }
   //get data for a specific fiddle
   getFiddleData(fiddleid:string):Observable<FiddleResponse>{
@@ -30,8 +34,7 @@ export class Fiddle {
   }
   //delete a fiddle
   delete(fiddleid:string):Observable<void>{
-    return this.http.delete<void>(`${this.baseUrl}fiddles/${fiddleid}`)
+    return this.http.delete<void>(`${this.baseUrl}/fiddles/${fiddleid}`)
   }
-
 }
         

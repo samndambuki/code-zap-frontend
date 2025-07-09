@@ -1,4 +1,4 @@
-import {Component, inject, OnInit } from '@angular/core';
+import {ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import {MatIconModule} from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Fiddle } from '../../services/fiddle';
@@ -18,6 +18,8 @@ export class Home implements OnInit {
   public fiddleService = inject(Fiddle);
   public userService = inject(User);
   public  router = inject(Router);
+  //force change detection
+  private cdr = inject(ChangeDetectorRef);
   
   constructor(){}
 
@@ -27,6 +29,7 @@ export class Home implements OnInit {
         console.log(response)
         this.fiddles = response;
         console.log("fiddles:", this.fiddles);
+        this.cdr.detectChanges();
       },
       error:(error)=>{
         console.log('error getting fiddles',error);

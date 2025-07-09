@@ -1,19 +1,20 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 import { MatButtonModule } from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Fiddle } from '../../services/fiddle';
 import { User } from '../../services/user';
 import { FiddleResponse } from '../../models/fiddle';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-coding',
-  imports: [MonacoEditorModule,CommonModule,MatButtonModule,MatFormFieldModule,MatInputModule,MatSelectModule,FormsModule],
+  imports: [MonacoEditorModule,CommonModule,MatButtonModule,MatFormFieldModule,MatInputModule,MatSelectModule,FormsModule,MatIconModule,RouterModule],
   templateUrl: './coding.html',
   styleUrl: './coding.scss'
 })
@@ -34,7 +35,10 @@ export class Coding implements OnInit {
   scrollBeyondLastLine: false
 };
 
-  constructor(private route:ActivatedRoute,private router:Router,public fiddleService:Fiddle,public userService:User){}
+//forcing change detection
+private cdr = inject(ChangeDetectorRef);
+
+constructor(private route:ActivatedRoute,private router:Router,public fiddleService:Fiddle,public userService:User){}
   
   ngOnInit(){
     this.fiddleid = this.route.snapshot.paramMap.get('fiddleid') || ''
@@ -47,6 +51,7 @@ export class Coding implements OnInit {
         this.code = this.fiddle.code || this.code;
         this.editorOptions.language = this.fiddle.language || '';
         console.log(this.fiddle);
+        this.cdr.detectChanges();
       },
       error:(error)=>{
         console.log(error)
@@ -54,6 +59,7 @@ export class Coding implements OnInit {
     })
     }
   }
+
 
   save(){
     if(!this.fiddleid || !this.userService.user.userid){
@@ -90,6 +96,23 @@ export class Coding implements OnInit {
     this.fiddleLanguage = '';
     this.code = '';
     this.editorOptions.language = '';
+  }
+
+deleteFiddle() {
+    if (!this.fiddleid) {
+      console.error('Fiddle ID missing');
+      return;
+    }
+    this.fiddleService.delete(this.fiddleid).subscribe({
+      next: () => {
+        console.log('Fiddle deleted:', this.fiddleid);
+        console.log('delete fiddle button clicked')
+        this.router.navigate(['/home']);
+      },
+      error: (error) => {
+        console.error('Error deleting fiddle:', error);
+      }
+    });
   }
 
 }
