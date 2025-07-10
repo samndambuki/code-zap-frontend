@@ -41,10 +41,20 @@ export class Home implements OnInit {
     this.fiddleService.newFiddle().subscribe({
       next:(newFiddle)=>{
         console.log('new fiddle',newFiddle);
+        this.router.navigate(['/coding',newFiddle.fiddleid])
       },
       error:(error)=>{
         console.log('error creating fiddle',error);
       }
     })
+  }
+
+  delete(fiddleid:string){
+    for(let i =0;i<this.fiddles.length;i++){
+      if(this.fiddles[i].fiddleid === fiddleid){
+        this.fiddles.splice(i,1);
+        this.fiddleService.delete(fiddleid)
+      }
+    }
   }
 }

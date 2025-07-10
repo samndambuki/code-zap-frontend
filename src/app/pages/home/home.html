@@ -10,7 +10,7 @@
           </div>
           <div class="actions">
               <button [routerLink]="['/coding',fiddle.fiddleid]" mat-icon-button> <mat-icon style="transform: scale(0.7);color:blue">edit</mat-icon> </button>
-              <button mat-icon-button> <mat-icon style="transform: scale(0.7);color:red">delete</mat-icon> </button>
+              <button mat-icon-button (click)="delete(fiddle.fiddleid)"> <mat-icon style="transform: scale(0.7);color:red">delete</mat-icon> </button>
           </div>
       </div>
       }

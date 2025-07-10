@@ -36,5 +36,8 @@ export class Fiddle {
   delete(fiddleid:string):Observable<void>{
     return this.http.delete<void>(`${this.baseUrl}/fiddles/${fiddleid}`)
   }
+  run(opts:any):Observable<any>{
+    return this.http.post(`${this.baseUrl}/execute`,opts)
+  }
 }
-        
+       

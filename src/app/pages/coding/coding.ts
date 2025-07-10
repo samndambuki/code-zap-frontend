@@ -25,7 +25,8 @@ export class Coding implements OnInit {
   fiddleLanguage:string = '';
   code: string = '';
   stdin:string='';
-  output:string='Run the code to get the output';
+  // output:string='Run the code to get the output';
+  stdout:string = "Run the code to get the output";
 
   editorOptions: any = {
   theme: 'vs-dark',
@@ -84,6 +85,7 @@ constructor(private route:ActivatedRoute,private router:Router,public fiddleServ
         this.fiddleLanguage = this.fiddle.language
         this.code = this.fiddle.code
         console.log('fiddle saved',this.fiddle)
+        this.router.navigate(['/home']);
       },
       error:(error)=>{
         console.log('error saving the fiddle',error)
@@ -113,6 +115,25 @@ deleteFiddle() {
         console.error('Error deleting fiddle:', error);
       }
     });
+  }
+
+  run(){
+    let opts = {
+      script:this.code,
+      stdin:this.stdin,
+      language:this.fiddle?.language
+    }
+    this.fiddleService.run(opts).subscribe({
+      next:(response)=>{
+        console.log(response)
+        this.stdout = response.response.output;
+        console.log("stdout:",this.stdout)
+        this.cdr.detectChanges()
+      },
+      error:(error)=>{
+        console.log(error)
+      }
+    })
   }
 
 }

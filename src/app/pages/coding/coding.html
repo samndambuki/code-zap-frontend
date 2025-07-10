@@ -26,9 +26,9 @@
     </ngx-monaco-editor>
       <mat-form-field>
         <mat-label>StdIn</mat-label>
-        <textarea  matInput  rows="6"></textarea>
+        <textarea  matInput  rows="6" [(ngModel)]="stdin"></textarea>
       </mat-form-field>
-      <button class="run-button" mat-raised-button>Run</button>
-      <pre class="output">Run the code to get the output</pre>
+      <button class="run-button" mat-raised-button (click)="run()">Run</button>
+      <pre class="output">{{stdout}}</pre>
     </div>
   </div>
